@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Yoast WooCommerce SEO
-Version: 1.0
+Version: 1.0.1
 Plugin URI: http://yoast.com/wordpress/yoast-woocommerce-seo/
 Description: This extenstion to WooCommerce and WordPress SEO by Yoast makes sure there's perfect communication between the two plugins.
 Author: Joost de Valk
@@ -80,7 +80,7 @@ class Yoast_WooCommerce_SEO {
 
 		if ( $this->license_active ) {
 			// Initialize the defaults
-			if ( !isset( $this->options['dbversion'] ) )
+			if ( ! isset( $this->options['dbversion'] ) )
 				$this->initialize_defaults();
 
 			// Check if the options need updating
@@ -109,7 +109,8 @@ class Yoast_WooCommerce_SEO {
 				if ( isset( $this->options['metabox_woo_top'] ) && $this->options['metabox_woo_top'] )
 					add_action( 'admin_footer', array( $this, 'footer_js' ) );
 			}
-		} else if ( $this->license_active ) {
+		}
+		else if ( $this->license_active ) {
 			if ( function_exists( 'get_wpseo_options' ) )
 				$wpseo_options = get_wpseo_options();
 			else
@@ -130,10 +131,10 @@ class Yoast_WooCommerce_SEO {
 			add_filter( 'woocommerce_attribute', array( $this, 'schema_filter' ), 10, 2 );
 
 			if ( isset( $this->options['breadcrumbs'] )
-				&& $this->options['breadcrumbs']
-				&& isset( $wpseo_options['breadcrumbs-enable'] )
-				&& $wpseo_options['breadcrumbs-enable']
-				&& class_exists( 'WPSEO_Breadcrumbs' )
+					&& $this->options['breadcrumbs']
+					&& isset( $wpseo_options['breadcrumbs-enable'] )
+					&& $wpseo_options['breadcrumbs-enable']
+					&& class_exists( 'WPSEO_Breadcrumbs' )
 			) {
 				remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
 				add_action( 'woocommerce_before_main_content', array( $this, 'woo_wpseo_breadcrumbs' ) );
@@ -148,9 +149,9 @@ class Yoast_WooCommerce_SEO {
 	 */
 	function initialize_update_class() {
 
-		if ( isset( $this->options['license'] ) && !empty( $this->options['license'] ) ) {
+		if ( isset( $this->options['license'] ) && ! empty( $this->options['license'] ) ) {
 			// Conditionally load the custom updater
-			if ( !class_exists( 'EDD_SL_Plugin_Updater' ) )
+			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) )
 				include( dirname( __FILE__ ) . '/EDD_SL_Plugin_Updater.php' );
 
 			global $edd_updater;
@@ -229,7 +230,7 @@ class Yoast_WooCommerce_SEO {
 
 		$this->options = get_option( $this->short_name );
 
-		if ( !isset( $this->options['license'] ) || empty( $this->options['license'] ) ) {
+		if ( ! isset( $this->options['license'] ) || empty( $this->options['license'] ) ) {
 			unset( $this->options['license'] );
 			unset( $this->options['license-status'] );
 			update_option( $this->short_name, $this->options );
@@ -238,7 +239,8 @@ class Yoast_WooCommerce_SEO {
 
 		if ( 'valid' == $this->options['license-status'] ) {
 			return;
-		} else if ( isset( $this->options['license'] ) ) {
+		}
+		else if ( isset( $this->options['license'] ) ) {
 			// data to send in our API request
 			$api_params = array(
 				'edd_action' => 'activate_license',
@@ -291,7 +293,7 @@ class Yoast_WooCommerce_SEO {
 
 			$response = wp_remote_get( $url, array( 'timeout' => 25, 'sslverify' => false ) );
 
-			if ( !is_wp_error( $response ) ) {
+			if ( ! is_wp_error( $response ) ) {
 				$response = json_decode( $response['body'] );
 
 				if ( 'deactivated' == $response->license || 'failed' == $response->license ) {
@@ -308,8 +310,8 @@ class Yoast_WooCommerce_SEO {
 
 		<a href="http://yoast.com/wordpress/woocommerce-yoast-seo/">
 			<div id="yoast-icon"
-				 style="background: url('<?php echo WPSEO_URL; ?>images/wordpress-SEO-32x32.png') no-repeat;"
-				 class="icon32"><br/></div>
+					 style="background: url('<?php echo WPSEO_URL; ?>images/wordpress-SEO-32x32.png') no-repeat;"
+					 class="icon32"><br /></div>
 		</a>
 
 		<h2 id="wpseo-title"><?php _e( 'WooCommerce SEO Settings', 'yoast-woo-seo' ); ?></h2>
@@ -323,8 +325,8 @@ class Yoast_WooCommerce_SEO {
 		echo '<div style="max-width: 600px;">';
 		echo '<h2>' . __( 'License', 'yoast-woo-seo' ) . '</h2>';
 		echo '<label class="textinput" for="license">' . __( 'License Key', 'yoast-woo-seo' ) . ':</label> '
-			. '<input id="license" class="textinput" type="text" name="' . $this->short_name . '[license]" value="'
-			. ( isset( $this->options['license'] ) ? $this->options['license'] : '' ) . '"/><br/>';
+				. '<input id="license" class="textinput" type="text" name="' . $this->short_name . '[license]" value="'
+				. ( isset( $this->options['license'] ) ? $this->options['license'] : '' ) . '"/><br/>';
 		echo '<p class="clear description">' . __( 'License Status', 'yoast-woo-seo' ) . ': ' . ( ( $this->license_active ) ? '<span style="color:#090; font-weight:bold">' . __( 'active', 'yoast-woo-seo' ) . '</span>' : '<span style="color:#f00; font-weight:bold">' . __( 'inactive', 'yoast-woo-seo' ) . '</span>' ) . '</p>';
 		echo '<input type="hidden" name="' . $this->short_name . '[license-status]" value="' . ( ( $this->license_active ) ? 'valid' : 'invalid' ) . '"/>';
 
@@ -354,7 +356,7 @@ class Yoast_WooCommerce_SEO {
 				echo '</select>';
 				if ( $i == 1 )
 					echo '<br class="clear"/>';
-				$i++;
+				$i ++;
 			}
 
 			echo '<br class="clear"/>';
@@ -439,6 +441,7 @@ class Yoast_WooCommerce_SEO {
 	 * @since 1.0
 	 *
 	 * @param array $columns
+	 *
 	 * @return mixed
 	 */
 	function column_heading( $columns ) {
@@ -462,7 +465,7 @@ class Yoast_WooCommerce_SEO {
 	 *
 	 * @since 1.0
 	 *
-	 * @param bool   $bool		Whether or not to include this post type in the XML sitemap
+	 * @param bool   $bool    Whether or not to include this post type in the XML sitemap
 	 * @param string $post_type
 	 *
 	 * @return bool
@@ -478,8 +481,9 @@ class Yoast_WooCommerce_SEO {
 	 *
 	 * @since 1.0
 	 *
-	 * @param bool   $bool		Whether or not to include this post type in the XML sitemap
+	 * @param bool   $bool    Whether or not to include this post type in the XML sitemap
 	 * @param string $taxonomy
+	 *
 	 * @return bool
 	 */
 	function xml_sitemap_taxonomies( $bool, $taxonomy ) {
@@ -498,13 +502,13 @@ class Yoast_WooCommerce_SEO {
 	 * @since 1.0
 	 */
 	function og_enhancement() {
-		if ( !is_singular( 'product' ) || !function_exists( 'get_product' ) )
+		if ( ! is_singular( 'product' ) || ! function_exists( 'get_product' ) )
 			return;
 
 		global $wpseo_og;
 
 		$product = get_product( get_the_ID() );
-		if ( !is_object( $product ) ) {
+		if ( ! is_object( $product ) ) {
 			return;
 		}
 
@@ -536,10 +540,11 @@ class Yoast_WooCommerce_SEO {
 	 * @since 1.0
 	 *
 	 * @param string $desc The current description, will be overwritten if we're on a product page.
+	 *
 	 * @return string
 	 */
 	function og_desc_enhancement( $desc ) {
-		if ( !is_singular( 'product' ) )
+		if ( ! is_singular( 'product' ) )
 			return $desc;
 
 		return strip_tags( get_the_excerpt() );
@@ -551,7 +556,7 @@ class Yoast_WooCommerce_SEO {
 	 * @since 1.0
 	 */
 	function twitter_enhancement() {
-		if ( !is_singular( 'product' ) || !function_exists( 'get_product' ) )
+		if ( ! is_singular( 'product' ) || ! function_exists( 'get_product' ) )
 			return;
 
 		$product = get_product( get_the_ID() );
@@ -581,7 +586,7 @@ class Yoast_WooCommerce_SEO {
 					$product_atts['data' . $i]  = strip_tags( get_the_term_list( get_the_ID(), $tax->name, '', ', ' ) );
 					break;
 			}
-			$i++;
+			$i ++;
 		}
 
 		foreach ( $product_atts as $label => $value ) {
@@ -595,6 +600,7 @@ class Yoast_WooCommerce_SEO {
 	 * @since 1.0
 	 *
 	 * @param string $type Passed on without changing if not a product.
+	 *
 	 * @return string
 	 */
 	function return_type_product( $type ) {
@@ -626,13 +632,57 @@ class Yoast_WooCommerce_SEO {
 }
 
 /**
+ * Throw an error if WordPress SEO is not installed.
+ *
+ * @since 1.0.1
+ */
+function yoast_wpseo_missing_error() {
+	echo '<div class="error"><p>' . sprintf( __( 'Please %sinstall &amp; activate WordPress SEO by Yoast%s and then enable its XML sitemap functionality to allow the Video SEO module to work.' ), '<a href="' . admin_url( 'plugin-install.php?tab=search&type=term&s=wordpress+seo&plugin-search-input=Search+Plugins' ) . '">', '</a>' ) . '</p></div>';
+}
+
+/**
+ * Throw an error if WordPress SEO is not installed.
+ *
+ * @since 1.0.1
+ */
+function yoast_wordpress_upgrade_error() {
+	echo '<div class="error"><p>' . __( 'Please upgrade WordPress to the latest version to allow WordPress and the Video SEO module to work properly.', 'yoast-video-seo' ) . '</p></div>';
+}
+
+/**
+ * Throw an error if WordPress SEO is not installed.
+ *
+ * @since 1.0.1
+ */
+function yoast_wpseo_upgrade_error() {
+	echo '<div class="error"><p>' . __( 'Please upgrade the WordPress SEO plugin to the latest version to allow the Video SEO module to work.', 'yoast-video-seo' ) . '</p></div>';
+}
+
+
+/**
  * Initialize the plugin class, to make sure all the required functionality is loaded, do this after plugins_loaded.
  *
  * @since 1.0
  */
 function initialize_yoast_woocommerce_seo() {
 	global $yoast_woo_seo;
-	$yoast_woo_seo = new Yoast_WooCommerce_SEO();
+	global $wp_version;
+
+	if ( ! version_compare( $wp_version, '3.5', '>=' ) ) {
+		add_action( 'all_admin_notices', 'yoast_wordpress_upgrade_error' );
+	}
+	else if ( defined( 'WPSEO_VERSION' ) ) {
+		if ( version_compare( WPSEO_VERSION, '1.4.15', '>=' ) ) {
+			$yoast_woo_seo = new Yoast_WooCommerce_SEO();
+		}
+		else {
+			add_action( 'all_admin_notices', 'yoast_wpseo_upgrade_error' );
+		}
+
+	}
+	else {
+		add_action( 'all_admin_notices', 'yoast_wpseo_missing_error' );
+	}
 }
 
 add_action( 'plugins_loaded', 'initialize_yoast_woocommerce_seo', 20 );
