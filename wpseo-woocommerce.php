@@ -54,7 +54,7 @@ class Yoast_WooCommerce_SEO {
 	/**
 	 * @var string Version of the plugin.
 	 */
-	var $version = '1.0';
+	var $version = '1.0.1';
 
 	/**
 	 * @var int Database version to check whether the plugins options need updating.
