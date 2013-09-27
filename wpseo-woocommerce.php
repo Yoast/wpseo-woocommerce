@@ -318,20 +318,24 @@ class Yoast_WooCommerce_SEO {
 	 * @since 1.0
 	 */
 	function activate_license() {
-
 		$this->options = get_option( $this->short_name );
 
 		if ( ! isset( $this->options['license'] ) || empty( $this->options['license'] ) ) {
+			if ( defined( 'WPSEO_WOO_LICENSE' ) ) {
+				$this->options['license'] = WPSEO_WOO_LICENSE;
+			}
+		}
+		if ( ( ! isset( $this->options['license'] ) || empty( $this->options['license'] ) ) && ! defined( 'WPSEO_WOO_LICENSE' ) ) {
 			unset( $this->options['license'] );
 			unset( $this->options['license-status'] );
 			update_option( $this->short_name, $this->options );
 			return;
 		}
 
-		if ( 'valid' == $this->options['license-status'] ) {
+		if ( isset ( $this->options['license-status'] ) && 'valid' == $this->options['license-status'] ) {
 			return;
 		}
-		else if ( isset( $this->options['license'] ) ) {
+		else if ( isset( $this->options['license'] ) || defined( 'WPSEO_WOO_LICENSE' ) ) {
 			// data to send in our API request
 			$api_params = array(
 				'edd_action' => 'activate_license',
@@ -640,7 +644,7 @@ class Yoast_WooCommerce_SEO {
 
 		if ( is_product_taxonomy() ) {
 			$term_desc = term_description();
-			if ( !empty( $term_desc ) )
+			if ( ! empty( $term_desc ) )
 				return trim( strip_tags( $term_desc ) );
 		}
 
@@ -771,6 +775,7 @@ function initialize_yoast_woocommerce_seo() {
 	else if ( defined( 'WPSEO_VERSION' ) ) {
 		if ( version_compare( WPSEO_VERSION, '1.4.15', '>=' ) ) {
 			$yoast_woo_seo = new Yoast_WooCommerce_SEO();
+			$yoast_woo_seo->activate_license();
 		}
 		else {
 			add_action( 'all_admin_notices', 'yoast_wpseo_woocommerce_upgrade_error' );
