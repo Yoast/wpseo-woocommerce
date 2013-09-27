@@ -29,6 +29,11 @@ You can find the FAQ [online here](http://yoast.com/wordpress/woocommerce-seo/fa
 Changelog
 =========
 
+Trunk
+------
+* Enhancement
+	* Define 'WPSEO_WOO_LICENSE' in wp-config.php to automatically activate the license (also in WPMU install) on plugin activation
+
 1.1
 ---
 
