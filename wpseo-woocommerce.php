@@ -590,10 +590,10 @@ class Yoast_WooCommerce_SEO {
 						$metadesc = $product->post->post_excerpt;
 					} elseif ( $product->post->post_content != '' ) {
 						$metadesc = $product->post->post_content;
-					}
 
-					if ( ! empty( $metadesc ) ) {
-						$metadesc = wp_html_excerpt( $metadesc, 156 );
+						if ( ! empty( $metadesc ) ) {
+							$metadesc = wp_html_excerpt( $metadesc, 156 );
+						}
 					}
 				}
 			}
