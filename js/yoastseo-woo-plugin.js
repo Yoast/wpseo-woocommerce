@@ -62,6 +62,38 @@
 	};
 
 	/**
+	 * Strip double spaces from text
+	 *
+	 * @param {String} text The text to strip spaces from.
+	 * @returns {String} The text without double spaces
+	 */
+	var stripSpaces = function( text ) {
+
+		// Replace multiple spaces with single space
+		text = text.replace( /\s{2,}/g, ' ' );
+
+		// Replace spaces followed by periods with only the period.
+		text = text.replace( /\s\./g, '.' );
+
+		// Remove first/last character if space
+		text = text.replace( /^\s+|\s+$/g, '' );
+
+		return text;
+	};
+
+	/**
+	 * Strip HTML-tags from text
+	 *
+	 * @param {String} text The text to strip the HTML-tags from.
+	 * @returns {String} The text without HTML-tags.
+	 */
+	var stripTags = function( text ) {
+		text = text.replace( /(<([^>]+)>)/ig, ' ' );
+		text = stripSpaces( text );
+		return text;
+	};
+
+	/**
 	 * Tests the length of the productdescription.
 	 * @returns {Number}
 	 */
@@ -70,7 +102,7 @@
 		if (typeof tinyMCE !== 'undefined' && tinyMCE.get( 'excerpt') !== null) {
 			productDescription = tinyMCE.get( 'excerpt').getContent();
 		}
-		productDescription = YoastSEO.getStringHelper().stripAllTags( productDescription );
+		productDescription = stripTags( productDescription );
 		return productDescription.split( ' ' ).length;
 	};
 

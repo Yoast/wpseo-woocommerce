@@ -2,7 +2,7 @@ WooCommerce Yoast SEO
 =====================
 Requires at least: 4.0<br>
 Tested up to: 4.4<br>
-Stable tag: 3.1<br>
+Stable tag: 3.1.1<br>
 
 This extension to WooCommerce and WordPress SEO by Yoast makes sure there's perfect communication between the two plugins.
 
@@ -28,6 +28,11 @@ You can find the FAQ [online here](https://yoast.com/wordpress/plugins/yoast-woo
 
 Changelog
 =========
+
+### 3.1.1: March 2nd, 2016
+
+* Bug fixes
+	* Fixes a bug where the Yoast content analysis would break on product edit pages when Yoast WooCommerce SEO and Yoast SEO (Premium) 3.1+ are both active.
 
 ### 3.1: March 2nd, 2016
 
