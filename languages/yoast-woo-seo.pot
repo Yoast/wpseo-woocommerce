@@ -1,10 +1,10 @@
 # Copyright (C) 2016 Team Yoast
-# This file is distributed under the same license as the Yoast WooCommerce SEO package.
+# This file is distributed under the same license as the Yoast SEO: WooCommerce package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yoast WooCommerce SEO 3.1\n"
+"Project-Id-Version: Yoast SEO: WooCommerce 3.3\n"
 "Report-Msgid-Bugs-To: https://github.com/yoast/wpseo-woocommerce/issues\n"
-"POT-Creation-Date: 2016-03-02 08:59:03+00:00\n"
+"POT-Creation-Date: 2016-06-14 10:39:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,112 +32,208 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: wpseo-woocommerce.php:272
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:89
+msgid ""
+"Please explain what you're trying to find or do. If something isn't "
+"working, please explain what you expect to happen. If you can make a "
+"screenshot, please attach it."
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:91
+msgid "Note: submitting this form also sends us debug info about your server."
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:103
+msgid "What can we help you with?"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:104
+msgid ""
+"Your search timed out. Please double-check your internet connection and try "
+"again."
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:105
+msgid "No results found for"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:106
+msgid "Send a Message"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:107
+msgid "Attach a file"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:108
+msgid "The maximum file size is 10mb"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:109
+msgid "Your Name"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:110
+msgid "Please enter your name"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:111
+msgid "Email address"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:112
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:113
+msgid "Select a topic"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:114
+msgid "Please select a topic from the list"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:115
+msgid "Subject"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:116
+msgid "Please enter a subject"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:117
+msgid "How can we help you?"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:118
+msgid "Please enter a message"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:119
+msgid "Send"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:120
+msgid "Message sent, thank you!"
+msgstr ""
+
+#: vendor/yoast/wp-helpscout/src/class-helpscout-beacon.php:121
+msgid ""
+"Someone from Team Yoast will get back to you soon, normally within a couple "
+"of hours."
+msgstr ""
+
+#: wpseo-woocommerce.php:283
 msgid "WooCommerce SEO Settings"
 msgstr ""
 
-#: wpseo-woocommerce.php:272
+#: wpseo-woocommerce.php:283
 msgid "WooCommerce SEO"
 msgstr ""
 
-#: wpseo-woocommerce.php:303
+#: wpseo-woocommerce.php:313
 msgid "Schema & OpenGraph additions"
 msgstr ""
 
-#: wpseo-woocommerce.php:304
+#: wpseo-woocommerce.php:314
 msgid ""
 "If you have product attributes for the following types, select them here, "
 "the plugin will make sure they're used for the appropriate Schema.org and "
 "OpenGraph markup."
 msgstr ""
 
-#: wpseo-woocommerce.php:305
+#: wpseo-woocommerce.php:315
 msgid "Brand"
 msgstr ""
 
-#: wpseo-woocommerce.php:319
+#: wpseo-woocommerce.php:329
 msgid "Manufacturer"
 msgstr ""
 
-#: wpseo-woocommerce.php:336
+#: wpseo-woocommerce.php:345
 msgid "Breadcrumbs"
 msgstr ""
 
-#: wpseo-woocommerce.php:337
+#: wpseo-woocommerce.php:349
+#. translators: %1$s resolves to interal links options page, %2$s resolves to
+#. closing link tag, %3$s resolves to Yoast SEO
 msgid ""
-"Both WooCommerce and WordPress SEO by Yoast have breadcrumbs functionality. "
-"The WP SEO breadcrumbs have a slightly higher chance of being picked up by "
-"search engines and you can configure them a bit more, on the %1$sInternal "
-"Links settings page%2$s. To enable them, check the box below and the "
-"WooCommerce breadcrumbs will be replaced."
+"Both WooCommerce and %3$s have breadcrumbs functionality. The %3$s "
+"breadcrumbs have a slightly higher chance of being picked up by search "
+"engines and you can configure them a bit more, on the %1$sInternal Links "
+"settings page%2$s. To enable them, check the box below and the WooCommerce "
+"breadcrumbs will be replaced."
 msgstr ""
 
-#: wpseo-woocommerce.php:338
+#: wpseo-woocommerce.php:354
 msgid "Replace WooCommerce Breadcrumbs"
 msgstr ""
 
-#: wpseo-woocommerce.php:343
+#: wpseo-woocommerce.php:358
 msgid "Admin"
 msgstr ""
 
-#: wpseo-woocommerce.php:344
+#: wpseo-woocommerce.php:362
+#. translators: %1$s resolves to Yoast SEO
 msgid ""
-"Both WooCommerce and WordPress SEO by Yoast add columns to the product "
-"page, to remove all but the SEO score column from Yoast on that page, check "
-"this box."
+"Both WooCommerce and %1$s add columns to the product page, to remove all "
+"but the SEO score column from %1$s on that page, check this box."
 msgstr ""
 
-#: wpseo-woocommerce.php:345
-msgid "Remove WordPress SEO columns"
+#: wpseo-woocommerce.php:365
+msgid "Remove Yoast SEO columns"
 msgstr ""
 
-#: wpseo-woocommerce.php:349
+#: wpseo-woocommerce.php:371
+#. translators: %1$s resolves to Yoast SEO
 msgid ""
-"Both WooCommerce and WordPress SEO by Yoast add metaboxes to the edit "
-"product page, if you want WooCommerce to be above WordPress SEO, check the "
-"box."
+"Both WooCommerce and %1$s add metaboxes to the edit product page, if you "
+"want WooCommerce to be above %1$s, check the box."
 msgstr ""
 
-#: wpseo-woocommerce.php:350
-msgid "Move WooCommerce Up"
+#: wpseo-woocommerce.php:374
+msgid "Move WooCommerce up"
 msgstr ""
 
-#: wpseo-woocommerce.php:704
+#: wpseo-woocommerce.php:734
 msgid "You should write a short description for this product."
 msgstr ""
 
-#: wpseo-woocommerce.php:705
+#: wpseo-woocommerce.php:735
 msgid "The short description for this product is too short."
 msgstr ""
 
-#: wpseo-woocommerce.php:706
+#: wpseo-woocommerce.php:736
 msgid "Your short description has a good length."
 msgstr ""
 
-#: wpseo-woocommerce.php:707
+#: wpseo-woocommerce.php:737
 msgid "The short description for this product is too long."
 msgstr ""
 
-#: wpseo-woocommerce.php:719
+#: wpseo-woocommerce.php:799
+#. translators: %1$s resolves to the plugin search for Yoast SEO, %2$s resolves
+#. to the closing tag, %3$s resolves to Yoast SEO
 msgid ""
-"Please %sinstall &amp; activate WordPress SEO by Yoast%s and then enable "
-"its XML sitemap functionality to allow the WooCommerce SEO module to work."
+"Please %1$sinstall &amp; activate %3$s%2$s and then enable its XML sitemap "
+"functionality to allow the WooCommerce SEO module to work."
 msgstr ""
 
-#: wpseo-woocommerce.php:728
+#: wpseo-woocommerce.php:812
 msgid ""
 "Please upgrade WordPress to the latest version to allow WordPress and the "
 "WooCommerce SEO module to work properly."
 msgstr ""
 
-#: wpseo-woocommerce.php:737
+#: wpseo-woocommerce.php:824
+#. translators: %1$s resolves to Yoast SEO
 msgid ""
-"Please upgrade the WordPress SEO plugin to the latest version to allow the "
+"Please upgrade the %1$s plugin to the latest version to allow the "
 "WooCommerce SEO module to work."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Yoast WooCommerce SEO"
+msgid "Yoast SEO: WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
