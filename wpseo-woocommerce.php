@@ -317,16 +317,6 @@ class Yoast_WooCommerce_SEO {
 	/**
 	 * Registers the settings page in the WP SEO menu.
 	 *
-	 * @since 1.0
-	 *
-	 * @deprecated
-	 */
-	public function register_settings_page() {
-	}
-
-	/**
-	 * Registers the settings page in the WP SEO menu.
-	 *
 	 * @since 5.6
 	 *
 	 * @param array $submenu_pages List of current submenus.
@@ -1137,53 +1127,6 @@ class Yoast_WooCommerce_SEO {
 			'woo_desc_good'  => __( 'Your short description has a good length.', 'yoast-woo-seo' ),
 			'woo_desc_long'  => __( 'The short description for this product is too long.', 'yoast-woo-seo' ),
 		);
-	}
-
-	/********************** DEPRECATED METHODS **********************/
-
-	/**
-	 * Initialize the plugin defaults.
-	 *
-	 * @deprecated 1.1.0 - now auto-handled by class WPSEO_Option_Woo
-	 */
-	public function initialize_defaults() {
-		_deprecated_function( __CLASS__ . '::' . __METHOD__, 'WooCommerce SEO 1.1.0', null );
-	}
-
-	/**
-	 * Registers the plugins setting for the Settings API
-	 *
-	 * @since      1.0
-	 * @deprecated 1.1.0 - now auto-handled by class WPSEO_Option_Woo
-	 */
-	public function options_init() {
-		_deprecated_function( __CLASS__ . '::' . __METHOD__, 'WooCommerce SEO 1.1.0', null );
-	}
-
-	/**
-	 * Keep old behaviour of getting the twitter domain in a different way than in WPSEO, but prevent duplicate
-	 * twitter:domain meta tags
-	 *
-	 * @deprecated 3.1
-	 *
-	 * @param string $domain The domain to filter.
-	 *
-	 * @return  string
-	 */
-	public function filter_twitter_domain( $domain ) {
-		_deprecated_function( __CLASS__ . '::' . __METHOD__, 'WooCommerce SEO 3.1', null );
-
-		return '';
-	}
-
-	/**
-	 * Output the extra data for the Twitter Card
-	 *
-	 * @deprecated 3.1
-	 * @since      1.0
-	 */
-	public function twitter_enhancement() {
-		_deprecated_function( __CLASS__ . '::' . __METHOD__, 'WooCommerce SEO 3.1', null );
 	}
 }
 
