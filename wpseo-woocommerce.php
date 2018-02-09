@@ -102,8 +102,8 @@ class Yoast_WooCommerce_SEO {
 			return false;
 		}
 
-		// When version is below 7.0.
-		if ( ! version_compare( $wordpress_seo_version, '7.0', '>=' ) ) {
+		// Make sure Yoast SEO is at least 7.0, including the RC versions, so bigger than 6.9.
+		if ( ! version_compare( $wordpress_seo_version, '6.9', '>' ) ) {
 			add_action( 'all_admin_notices', 'yoast_wpseo_woocommerce_upgrade_error' );
 
 			return false;
