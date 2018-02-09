@@ -87,7 +87,7 @@ class Yoast_WooCommerce_SEO {
 	 * @return bool True whether the dependencies are okay.
 	 */
 	protected function check_dependencies( $wp_version ) {
-		if ( ! version_compare( $wp_version, '3.5', '>=' ) ) {
+		if ( ! version_compare( $wp_version, '4.8', '>=' ) ) {
 			add_action( 'all_admin_notices', 'yoast_wpseo_woocommerce_wordpress_upgrade_error' );
 
 			return false;
