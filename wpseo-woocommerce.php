@@ -67,7 +67,7 @@ class Yoast_WooCommerce_SEO {
 	}
 
 	/**
-	 * Class constructor
+	 * Class constructor.
 	 *
 	 * @since 1.0
 	 */
