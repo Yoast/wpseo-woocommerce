@@ -403,59 +403,67 @@ class Yoast_WooCommerce_SEO {
 		$wpseo_options = WPSEO_Options::get_all();
 		if ( $wpseo_options['breadcrumbs-enable'] === true ) {
 			echo '<h2>' . __( 'Breadcrumbs', 'yoast-woo-seo' ) . '</h2>';
-			echo '<p>',
-
+			echo '<p>';
+			printf(
+				/* translators: %1$s resolves to internal links options page, %2$s resolves to closing link tag, %3$s resolves to Yoast SEO, %4$s resolves to WooCommerce */
+				__( 'Both %4$s and %3$s have breadcrumbs functionality. The %3$s breadcrumbs have a slightly higher chance of being picked up by search engines and you can configure them a bit more, on the %1$sBreadcrumbs settings page%2$s. To enable them, check the box below and the WooCommerce breadcrumbs will be replaced.', 'yoast-woo-seo' ),
+				'<a href="' . esc_url( admin_url( 'admin.php?page=wpseo_advanced&tab=breadcrumbs' ) ) . '">',
+				'</a>',
+				'Yoast SEO',
+				'WooCommerce'
+			);
+			echo "</p>\n";
+			$this->checkbox(
+				'breadcrumbs',
 				sprintf(
-					/* translators: %1$s resolves to internal links options page, %2$s resolves to closing link tag, %3$s resolves to Yoast SEO, %4$s resolves to WooCommerce */
-					__( 'Both %4$s and %3$s have breadcrumbs functionality. The %3$s breadcrumbs have a slightly higher chance of being picked up by search engines and you can configure them a bit more, on the %1$sBreadcrumbs settings page%2$s. To enable them, check the box below and the WooCommerce breadcrumbs will be replaced.', 'yoast-woo-seo' ),
-					'<a href="' . esc_url( admin_url( 'admin.php?page=wpseo_advanced&tab=breadcrumbs' ) ) . '">',
-					'</a>',
-					'Yoast SEO',
+					/* translators: %1$s resolves to WooCommerce */
+					__( 'Replace %1$s Breadcrumbs', 'yoast-woo-seo' ),
 					'WooCommerce'
-				), "</p>\n";
-				$this->checkbox( 'breadcrumbs',
-					sprintf(
-						/* translators: %1$s resolves to WooCommerce */
-						__( 'Replace %1$s Breadcrumbs', 'yoast-woo-seo' ),
-						'WooCommerce'
-					)
-				);
+				)
+			);
 		}
 
 		echo '<br class="clear"/>';
 		echo '<h2>' . __( 'Admin', 'yoast-woo-seo' ) . '</h2>';
-		echo '<p>',
+		echo '<p>';
+		printf(
+			/* translators: %1$s resolves to Yoast SEO, %2$s resolves to WooCommerce */
+			__( 'Both %2$s and %1$s add columns to the product page, to remove all but the SEO score column from %1$s on that page, check this box.', 'yoast-woo-seo' ),
+			'Yoast SEO',
+			'WooCommerce'
+		);
+		echo "</p>\n";
+		$this->checkbox(
+			'hide_columns',
 			sprintf(
-				/* translators: %1$s resolves to Yoast SEO, %2$s resolves to WooCommerce */
-				__( 'Both %2$s and %1$s add columns to the product page, to remove all but the SEO score column from %1$s on that page, check this box.', 'yoast-woo-seo' ),
-				'Yoast SEO',
-				'WooCommerce'
-			), "</p>\n";
-			$this->checkbox( 'hide_columns', sprintf(
 				/* translators: %1$s resolves to Yoast SEO */
-				__( 'Remove %1$s columns', 'yoast-woo-seo' ), 'Yoast SEO' )
-			);
+				__( 'Remove %1$s columns', 'yoast-woo-seo' ),
+				'Yoast SEO'
+			)
+		);
 
-			echo '<br class="clear"/>';
-			echo '<p>',
+		echo '<br class="clear"/>';
+		echo '<p>';
+		printf(
+			/* translators: %1$s resolves to Yoast SEO, %2$s resolves to WooCommerce */
+			__( 'Both %2$s and %1$s add metaboxes to the edit product page, if you want %2$s to be above %1$s, check the box.', 'yoast-woo-seo' ),
+			'Yoast SEO',
+			'WooCommerce'
+		);
+		echo "</p>\n";
+		$this->checkbox(
+			'metabox_woo_top',
 			sprintf(
-				/* translators: %1$s resolves to Yoast SEO, %2$s resolves to WooCommerce */
-				__( 'Both %2$s and %1$s add metaboxes to the edit product page, if you want %2$s to be above %1$s, check the box.', 'yoast-woo-seo' ),
-				'Yoast SEO',
+				/* translators: %1$s resolves to WooCommerce */
+				__( 'Move %1$s up', 'yoast-woo-seo' ),
 				'WooCommerce'
-			), "</p>\n";
-			$this->checkbox( 'metabox_woo_top',
-				sprintf(
-					/* translators: %1$s resolves to WooCommerce */
-					__( 'Move %1$s up', 'yoast-woo-seo' ),
-					'WooCommerce'
-				)
-			);
+			)
+		);
 
-			echo '<br class="clear"/>';
+		echo '<br class="clear"/>';
 
-			// Submit button and debug info.
-			WPSEO_WooCommerce_Wrappers::admin_footer( true, false );
+		// Submit button and debug info.
+		WPSEO_WooCommerce_Wrappers::admin_footer( true, false );
 	}
 
 	/**
@@ -683,7 +691,7 @@ class Yoast_WooCommerce_SEO {
 			$term_desc = term_description();
 
 			if ( ! empty( $term_desc ) ) {
-				$desc = trim( strip_tags( $term_desc ) );
+				$desc = wp_strip_all_tags( $term_desc, true );
 				$desc = strip_shortcodes( $desc );
 			}
 		}
@@ -735,7 +743,7 @@ class Yoast_WooCommerce_SEO {
 		}
 
 		$short_description = $this->get_short_product_description( $product );
-		$long_description = $this->get_product_description( $product );
+		$long_description  = $this->get_product_description( $product );
 
 		if ( $short_description !== '' ) {
 			return $short_description;
@@ -759,7 +767,7 @@ class Yoast_WooCommerce_SEO {
 	 * @return string
 	 */
 	protected function get_short_product_description( $product ) {
-		if (  method_exists( $product, 'get_short_description' ) ) {
+		if ( method_exists( $product, 'get_short_description' ) ) {
 			return $product->get_short_description();
 		}
 		return $product->post->post_excerpt;
@@ -875,7 +883,7 @@ class Yoast_WooCommerce_SEO {
 	protected function is_woocommerce_page( $page ) {
 		$woo_pages = array( 'wpseo_woo' );
 
-		return in_array( $page, $woo_pages );
+		return in_array( $page, $woo_pages, true );
 	}
 
 	/**
@@ -1002,7 +1010,7 @@ class Yoast_WooCommerce_SEO {
 		}
 
 		if ( method_exists( $product, 'get_price' ) ) {
-			return strip_tags( wc_price( $product->get_price() ) );
+			return wp_strip_all_tags( wc_price( $product->get_price() ), true );
 		}
 
 		return '';
@@ -1130,7 +1138,6 @@ class Yoast_WooCommerce_SEO {
 	}
 }
 
-
 /**
  * Throw an error if WordPress SEO is not installed.
  *
@@ -1193,7 +1200,7 @@ function initialize_yoast_woocommerce_seo() {
 	if ( ! version_compare( $wp_version, '3.5', '>=' ) ) {
 		add_action( 'all_admin_notices', 'yoast_wpseo_woocommerce_wordpress_upgrade_error' );
 	}
-	else if ( defined( 'WPSEO_VERSION' ) ) {
+	elseif ( defined( 'WPSEO_VERSION' ) ) {
 		if ( version_compare( WPSEO_VERSION, '1.5', '>=' ) ) {
 			$yoast_woo_seo = new Yoast_WooCommerce_SEO();
 		}
@@ -1203,17 +1210,6 @@ function initialize_yoast_woocommerce_seo() {
 	}
 	else {
 		add_action( 'all_admin_notices', 'yoast_wpseo_woocommerce_missing_error' );
-	}
-}
-
-if ( ! function_exists( 'wp_installing' ) ) {
-	/**
-	 * We need to define wp_installing in WordPress versions older than 4.4
-	 *
-	 * @return bool
-	 */
-	function wp_installing() {
-		return defined( 'WP_INSTALLING' );
 	}
 }
 
@@ -1294,7 +1290,7 @@ class WPSEO_WooCommerce_Wrappers {
 		global $wpseo_admin_pages;
 
 		if ( ! $wpseo_admin_pages instanceof WPSEO_Admin_Pages ) {
-			$wpseo_admin_pages = new WPSEO_Admin_Pages;
+			$wpseo_admin_pages = new WPSEO_Admin_Pages();
 		}
 
 		return $wpseo_admin_pages;

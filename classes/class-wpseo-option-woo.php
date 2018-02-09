@@ -204,8 +204,8 @@ if ( ! class_exists( 'WPSEO_Option_Woo' ) && class_exists( 'WPSEO_Option' ) ) {
 							}
 						}
 						break;
-				} // End switch().
-			} // End foreach().
+				}
+			}
 
 			return $clean;
 		}
@@ -216,7 +216,7 @@ if ( ! class_exists( 'WPSEO_Option_Woo' ) && class_exists( 'WPSEO_Option' ) ) {
 		 * @return array The found taxonomies.
 		 */
 		protected function get_taxonomies() {
-			$taxonomies           = get_object_taxonomies( 'product', 'objects' );
+			$taxonomies = get_object_taxonomies( 'product', 'objects' );
 
 			if ( ! is_array( $taxonomies ) || empty( $taxonomies ) ) {
 				return array();
@@ -231,6 +231,6 @@ if ( ! class_exists( 'WPSEO_Option_Woo' ) && class_exists( 'WPSEO_Option' ) ) {
 
 			return $processed_taxonomies;
 		}
-	} // End of class WPSEO_Option_Woo.
+	}
 
-} // End if().
+}

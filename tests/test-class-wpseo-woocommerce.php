@@ -16,7 +16,13 @@ class Yoast_WooCommerce_SEO_Test extends WPSEO_WooCommerce_UnitTestCase {
 	public function test_column_heading() {
 		$woocommerce = new Yoast_WooCommerce_SEO();
 
-		$actual = $woocommerce->column_heading( array( 'wpseo-title' => '', 'another-column' => '', 'wpseo-focuskw' => '' ) );
+		$actual   = $woocommerce->column_heading(
+			array(
+				'wpseo-title'    => '',
+				'another-column' => '',
+				'wpseo-focuskw'  => '',
+			)
+		);
 		$expected = array( 'another-column' => '' );
 
 		$this->assertEquals( $expected, $actual );

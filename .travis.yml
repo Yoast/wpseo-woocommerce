@@ -82,4 +82,6 @@ before_script:
 script:
 - if [[ "$PHPLINT" == "1" ]]; then find -L . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi
 - if [[ "$PHPCS" == "1" ]]; then vendor/bin/phpcs -v; fi
-- phpunit -c phpunit.xml
+- if [[ ${TRAVIS_PHP_VERSION:0:1} == "5" ]]; then phpunit -c phpunit.xml; fi
+- if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" || $TRAVIS_PHP_VERSION == "nightly" ]]; then vendor/bin/phpunit -c phpunit.xml; fi
+- if [[ $TRAVIS_PHP_VERSION == "5.3" || $TRAVIS_PHP_VERSION == "7.2" ]]; then composer validate --no-check-all; fi

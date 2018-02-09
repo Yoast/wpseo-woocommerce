@@ -2,7 +2,7 @@
     "name": "yoast/wpseo-woocommerce",
     "description": "This extension to WooCommerce and WordPress SEO by Yoast makes sure there's perfect communication between the two plugins.",
     "type": "wordpress-plugin",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Team Yoast",
