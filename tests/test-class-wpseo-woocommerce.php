@@ -48,6 +48,7 @@ class Yoast_WooCommerce_SEO_Test extends WPSEO_WooCommerce_UnitTestCase {
 			->getMock();
 
 		$class_instance
+			->expects( $this->any() )
 			->method( 'get_wordpress_seo_version' )
 			->will( $this->returnValue( $wordpress_seo_version ) );
 
