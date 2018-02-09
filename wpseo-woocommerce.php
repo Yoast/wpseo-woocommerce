@@ -317,16 +317,6 @@ class Yoast_WooCommerce_SEO {
 	/**
 	 * Registers the settings page in the WP SEO menu.
 	 *
-	 * @since 1.0
-	 *
-	 * @deprecated
-	 */
-	public function register_settings_page() {
-	}
-
-	/**
-	 * Registers the settings page in the WP SEO menu.
-	 *
 	 * @since 5.6
 	 *
 	 * @param array $submenu_pages List of current submenus.
@@ -1146,9 +1136,7 @@ class Yoast_WooCommerce_SEO {
 			'woo_desc_long'  => __( 'The short description for this product is too long.', 'yoast-woo-seo' ),
 		);
 	}
-
 }
-
 
 /**
  * Throw an error if WordPress SEO is not installed.
