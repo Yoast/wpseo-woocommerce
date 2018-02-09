@@ -39,8 +39,6 @@ class Yoast_WooCommerce_SEO_Test extends WPSEO_WooCommerce_UnitTestCase {
 	 * @param string $message               Message given by PHPUnit after assertion.
 	 *
 	 * @covers Yoast_WooCommerce_SEO::check_dependencies()
-	 *
-	 * @group test
 	 */
 	public function test_check_dependencies( $expected, $wordpress_seo_version, $wordpress_version, $message ) {
 		$class_instance = $this
