@@ -189,34 +189,7 @@ class Yoast_WooCommerce_SEO {
 		}
 		else {
 			if ( class_exists( 'WooCommerce', false ) ) {
-				$wpseo_options = WPSEO_Options::get_all();
-
-				// Add metadescription filter.
-				add_filter( 'wpseo_metadesc', array( $this, 'metadesc' ) );
-
-				// OpenGraph.
-				add_filter( 'language_attributes', array( $this, 'og_product_namespace' ), 11 );
-				add_filter( 'wpseo_opengraph_type', array( $this, 'return_type_product' ) );
-				add_filter( 'wpseo_opengraph_desc', array( $this, 'og_desc_enhancement' ) );
-				add_action( 'wpseo_opengraph', array( $this, 'og_enhancement' ), 50 );
-				add_action( 'wpseo_register_extra_replacements', array( $this, 'register_replacements' ) );
-
-				if ( class_exists( 'WPSEO_OpenGraph_Image' ) ) {
-					add_action( 'wpseo_add_opengraph_additional_images', array( $this, 'set_opengraph_image' ) );
-				}
-
-				add_filter( 'wpseo_sitemap_exclude_post_type', array( $this, 'xml_sitemap_post_types' ), 10, 2 );
-				add_filter( 'wpseo_sitemap_post_type_archive_link', array( $this, 'xml_sitemap_taxonomies' ), 10, 2 );
-
-				add_filter( 'post_type_archive_link', array( $this, 'xml_post_type_archive_link' ), 10, 2 );
-				add_filter( 'wpseo_sitemap_urlimages', array( $this, 'add_product_images_to_xml_sitemap' ), 10, 2 );
-
-				add_filter( 'woocommerce_attribute', array( $this, 'schema_filter' ), 10, 2 );
-
-				// Fix breadcrumbs.
-				if ( $this->options['breadcrumbs'] === true && $wpseo_options['breadcrumbs-enable'] === true ) {
-					$this->handle_breadcrumbs_replacements();
-				}
+				$this->add_woocommerce_hooks();
 			}
 		} // End if.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -602,8 +575,7 @@ class Yoast_WooCommerce_SEO {
 		</select>
 		<br class="clear"/>';
 
-		$wpseo_options = WPSEO_Options::get_all();
-		if ( $wpseo_options['breadcrumbs-enable'] === true ) {
+		if ( WPSEO_Options::get( 'breadcrumbs-enable' ) ) {
 			echo '<h2>' . esc_html__( 'Breadcrumbs', 'yoast-woo-seo' ) . '</h2>';
 			echo '<p>';
 			printf(
@@ -1353,17 +1325,59 @@ class Yoast_WooCommerce_SEO {
 	 *
 	 * @return void
 	 */
-	protected function handle_breadcrumbs_replacements() {
-		// Replaces the WooCommerce breadcrumbs.
-		if ( has_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb' ) ) {
-			remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
-			add_action( 'woocommerce_before_main_content', array( $this, 'show_yoast_breadcrumbs' ), 20, 0 );
+	public function handle_breadcrumbs_replacements() {
+		if ( $this->options['breadcrumbs'] !== true || WPSEO_Options::get( 'breadcrumbs-enable' ) !== true ) {
+			return;
+		}
+
+		$breadcrumb_hooks = array(
+			'woocommerce_before_main_content' => 20,
+			'woo_main_before'                 => 10,
+			'storefront_before_content'       => 10,
+		);
+
+		foreach ( $breadcrumb_hooks as $replacement_hook => $priority ) {
+			// Replaces the WooCommerce breadcrumbs.
+			if ( has_action( $replacement_hook, 'woocommerce_breadcrumb' ) ) {
+				remove_action( $replacement_hook, 'woocommerce_breadcrumb', $priority );
+				add_action( $replacement_hook, array( $this, 'show_yoast_breadcrumbs' ), $priority );
+			}
 		}
 
 		add_filter( 'wpseo_breadcrumb_links', array( $this, 'add_attribute_to_breadcrumbs' ) );
 	}
-}
 
+	/**
+	 * Add the WooCommerce specific hooks
+	 *
+	 * @return void
+	 */
+	protected function add_woocommerce_hooks() {
+		// Add metadescription filter.
+		add_filter( 'wpseo_metadesc', array( $this, 'metadesc' ) );
+
+		// OpenGraph.
+		add_filter( 'language_attributes', array( $this, 'og_product_namespace' ), 11 );
+		add_filter( 'wpseo_opengraph_type', array( $this, 'return_type_product' ) );
+		add_filter( 'wpseo_opengraph_desc', array( $this, 'og_desc_enhancement' ) );
+		add_action( 'wpseo_opengraph', array( $this, 'og_enhancement' ), 50 );
+		add_action( 'wpseo_register_extra_replacements', array( $this, 'register_replacements' ) );
+
+		if ( class_exists( 'WPSEO_OpenGraph_Image' ) ) {
+			add_action( 'wpseo_add_opengraph_additional_images', array( $this, 'set_opengraph_image' ) );
+		}
+
+		add_filter( 'wpseo_sitemap_exclude_post_type', array( $this, 'xml_sitemap_post_types' ), 10, 2 );
+		add_filter( 'wpseo_sitemap_post_type_archive_link', array( $this, 'xml_sitemap_taxonomies' ), 10, 2 );
+
+		add_filter( 'post_type_archive_link', array( $this, 'xml_post_type_archive_link' ), 10, 2 );
+		add_filter( 'wpseo_sitemap_urlimages', array( $this, 'add_product_images_to_xml_sitemap' ), 10, 2 );
+
+		add_filter( 'woocommerce_attribute', array( $this, 'schema_filter' ), 10, 2 );
+
+		add_action( 'init', array( $this, 'handle_breadcrumbs_replacements' ), 10, 0 );
+	}
+}
 
 /**
  * Throw an error if WordPress SEO is not installed.
