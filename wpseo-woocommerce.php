@@ -195,6 +195,7 @@ class Yoast_WooCommerce_SEO {
 
 			add_filter( 'wpseo_sitemap_exclude_post_type', array( $this, 'xml_sitemap_post_types' ), 10, 2 );
 			add_filter( 'wpseo_sitemap_post_type_archive_link', array( $this, 'xml_sitemap_taxonomies' ), 10, 2 );
+			add_filter( 'wpseo_sitemap_page_for_post_type_archive', array( $this, 'xml_post_type_archive_page_id' ), 10, 2 );
 
 			add_filter( 'post_type_archive_link', array( $this, 'xml_post_type_archive_link' ), 10, 2 );
 			add_filter( 'wpseo_sitemap_urlimages', array( $this, 'add_product_images_to_xml_sitemap' ), 10, 2 );
@@ -981,6 +982,23 @@ class Yoast_WooCommerce_SEO {
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Returns the ID of the WooCommerce shop page when product's archive is requested.
+	 *
+	 * @param int    $page_id   The page id.
+	 * @param string $post_type The post type to check against.
+	 *
+	 * @return int
+	 */
+	public function xml_post_type_archive_page_id( $page_id, $post_type ) {
+
+		if ( 'product' === $post_type && function_exists( 'wc_get_page_id' ) ) {
+			$page_id = wc_get_page_id( 'shop' );
+		}
+
+		return $page_id;
 	}
 
 	/**
