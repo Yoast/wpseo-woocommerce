@@ -2,7 +2,7 @@
 /**
  * WooCommerce Yoast SEO plugin.
  *
- * @package WPSEO/WooCommerce
+ * @package Yoast\WP\Woocommerce
  *
  * @wordpress-plugin
  * Plugin Name: Yoast SEO: WooCommerce
@@ -18,8 +18,10 @@
  * WC requires at least: 3.0
  * WC tested up to: 3.9
  *
- * Copyright 2014-2019 Yoast BV (email: support@yoast.com)
+ * Copyright 2014-2020 Yoast BV (email: support@yoast.com)
  */
+
+namespace Yoast\WP\Woocommerce;
 
 if ( ! function_exists( 'add_filter' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -41,21 +43,21 @@ define( 'WPSEO_WOO_VERSION', '12.5-RC4' );
  *
  * @return void
  */
-function initialize_yoast_woocommerce_seo() {
+function initialize() {
 
 	load_plugin_textdomain( 'yoast-woo-seo', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 	global $wp_version;
 
-	$dependency_check = new Yoast_WooCommerce_Dependencies();
+	$dependency_check = new Classes\Dependencies();
 	if ( $dependency_check->check_dependencies( $wp_version ) ) {
 		global $yoast_woo_seo;
 
 		// Initializes the plugin.
-		$yoast_woo_seo = new Yoast_WooCommerce_SEO();
+		$yoast_woo_seo = new Classes\Main();
 	}
 }
 
 if ( ! wp_installing() ) {
-	add_action( 'plugins_loaded', 'initialize_yoast_woocommerce_seo', 20 );
+	add_action( 'plugins_loaded', 'Yoast\WP\Woocommerce\initialize', 20 );
 }

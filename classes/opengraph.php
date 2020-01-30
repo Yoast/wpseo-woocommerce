@@ -1,17 +1,18 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package WPSEO/WooCommerce
- */
+
+namespace Yoast\WP\Woocommerce\Classes;
+
+use WPSEO_OpenGraph_Image;
+use WPSEO_Options;
+use WC_Product;
 
 /**
- * Class WPSEO_WooCommerce_OpenGraph
+ * Class OpenGraph
  */
-class WPSEO_WooCommerce_OpenGraph {
+class OpenGraph {
 
 	/**
-	 * WPSEO_WooCommerce_OpenGraph constructor.
+	 * OpenGraph constructor.
 	 */
 	public function __construct() {
 		add_filter( 'language_attributes', [ $this, 'product_namespace' ], 11 );
@@ -127,13 +128,13 @@ class WPSEO_WooCommerce_OpenGraph {
 	/**
 	 * Retrieve the primary and if that doesn't exist first term for the brand taxonomy.
 	 *
-	 * @param string      $schema_brand The taxonomy the site uses for brands.
-	 * @param \WC_Product $product      The product we're finding the brand for.
+	 * @param string     $schema_brand The taxonomy the site uses for brands.
+	 * @param WC_Product $product      The product we're finding the brand for.
 	 *
 	 * @return bool|string The brand name or false on failure.
 	 */
 	protected function get_brand_term_name( $schema_brand, $product ) {
-		$primary_term = WPSEO_WooCommerce_Utils::search_primary_term( [ $schema_brand ], $product );
+		$primary_term = Utils::search_primary_term( [ $schema_brand ], $product );
 		if ( ! empty( $primary_term ) ) {
 			return $primary_term;
 		}
@@ -193,7 +194,7 @@ class WPSEO_WooCommerce_OpenGraph {
 		$show_price = apply_filters( 'Yoast\WP\Woocommerce\og_price', $show_price );
 
 		if ( $show_price === true ) {
-			echo '<meta property="product:price:amount" content="' . esc_attr( WPSEO_WooCommerce_Utils::get_product_display_price( $product ) ) . '" />' . "\n";
+			echo '<meta property="product:price:amount" content="' . esc_attr( Utils::get_product_display_price( $product ) ) . '" />' . "\n";
 			echo '<meta property="product:price:currency" content="' . esc_attr( get_woocommerce_currency() ) . '" />' . "\n";
 		}
 	}

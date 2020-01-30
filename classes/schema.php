@@ -1,14 +1,19 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package WPSEO/WooCommerce
- */
+
+namespace Yoast\WP\Woocommerce\Classes;
+
+use WPSEO_Utils;
+use WPSEO_Schema_IDs;
+use WPSEO_Options;
+use WPSEO_Schema_Image;
+use WPSEO_Primary_Term;
+use WPSEO_Frontend;
+use WC_Product;
 
 /**
  * Class WPSEO_WooCommerce_Schema
  */
-class WPSEO_WooCommerce_Schema {
+class Schema {
 
 	/**
 	 * The schema data we're going to output.
@@ -105,8 +110,8 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Filter Schema Product data to work.
 	 *
-	 * @param array       $data    Schema Product data.
-	 * @param \WC_Product $product Product object.
+	 * @param array      $data    Schema Product data.
+	 * @param WC_Product $product Product object.
 	 *
 	 * @return array Schema Product data.
 	 */
@@ -136,8 +141,8 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Filters the offers array to enrich it.
 	 *
-	 * @param array       $data    Schema Product data.
-	 * @param \WC_Product $product The product.
+	 * @param array      $data    Schema Product data.
+	 * @param WC_Product $product The product.
 	 *
 	 * @return array Schema Product data.
 	 */
@@ -149,12 +154,12 @@ class WPSEO_WooCommerce_Schema {
 
 			// Add an @id to the offer.
 			if ( $offer['@type'] === 'Offer' ) {
-				$price                           = WPSEO_WooCommerce_Utils::get_product_display_price( $product );
+				$price                           = Utils::get_product_display_price( $product );
 				$data['offers'][ $key ]['@id']   = $home_url . '#/schema/offer/' . $product->get_id() . '-' . $key;
 				$data['offers'][ $key ]['price'] = $price;
 				$data['offers'][ $key ]['priceSpecification']['price']                 = $price;
 				$data['offers'][ $key ]['priceSpecification']['priceCurrency']         = get_woocommerce_currency();
-				$data['offers'][ $key ]['priceSpecification']['valueAddedTaxIncluded'] = WPSEO_WooCommerce_Utils::prices_with_tax();
+				$data['offers'][ $key ]['priceSpecification']['valueAddedTaxIncluded'] = Utils::prices_with_tax();
 			}
 			if ( $offer['@type'] === 'AggregateOffer' ) {
 				$data['offers'][ $key ]['@id']    = $home_url . '#/schema/aggregate-offer/' . $product->get_id() . '-' . $key;
@@ -185,7 +190,7 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Retrieve the global identifier type and value if we have one.
 	 *
-	 * @param \WC_Product $product Product object.
+	 * @param WC_Product $product Product object.
 	 *
 	 * @return bool True on success, false on failure.
 	 */
@@ -236,7 +241,7 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Add brand to our output.
 	 *
-	 * @param \WC_Product $product Product object.
+	 * @param WC_Product $product Product object.
 	 */
 	private function add_brand( $product ) {
 		$schema_brand = WPSEO_Options::get( 'woo_schema_brand' );
@@ -248,7 +253,7 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Add manufacturer to our output.
 	 *
-	 * @param \WC_Product $product Product object.
+	 * @param WC_Product $product Product object.
 	 */
 	private function add_manufacturer( $product ) {
 		$schema_manufacturer = WPSEO_Options::get( 'woo_schema_manufacturer' );
@@ -260,9 +265,9 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Adds an attribute to our Product data array with the value from a taxonomy, as an Organization,
 	 *
-	 * @param string      $attribute The attribute we're adding to Product.
-	 * @param \WC_Product $product   The WooCommerce product we're working with.
-	 * @param string      $taxonomy  The taxonomy to get the attribute's value from.
+	 * @param string     $attribute The attribute we're adding to Product.
+	 * @param WC_Product $product   The WooCommerce product we're working with.
+	 * @param string     $taxonomy  The taxonomy to get the attribute's value from.
 	 */
 	private function add_organization_for_attribute( $attribute, $product, $taxonomy ) {
 		$term = $this->get_primary_term_or_first_term( $taxonomy, $product->get_id() );
@@ -313,7 +318,7 @@ class WPSEO_WooCommerce_Schema {
 	 * @param string $taxonomy_name Taxonomy name for the term.
 	 * @param int    $post_id       Post ID for the term.
 	 *
-	 * @return WP_Term|null The primary term, the first term or null.
+	 * @return \WP_Term|null The primary term, the first term or null.
 	 */
 	protected function get_primary_term_or_first_term( $taxonomy_name, $post_id ) {
 		$primary_term    = new WPSEO_Primary_Term( $taxonomy_name, $post_id );
@@ -321,7 +326,7 @@ class WPSEO_WooCommerce_Schema {
 
 		if ( $primary_term_id !== false ) {
 			$primary_term = get_term( $primary_term_id );
-			if ( $primary_term instanceof WP_Term ) {
+			if ( $primary_term instanceof \WP_Term ) {
 				return $primary_term;
 			}
 		}
@@ -349,7 +354,7 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Adds the individual product variants as variants of the offer.
 	 *
-	 * @param \WC_Product $product The WooCommerce product we're working with.
+	 * @param WC_Product $product The WooCommerce product we're working with.
 	 *
 	 * @return array Schema Offers data.
 	 */
@@ -358,7 +363,7 @@ class WPSEO_WooCommerce_Schema {
 
 		$site_url           = trailingslashit( get_site_url() );
 		$currency           = get_woocommerce_currency();
-		$prices_include_tax = WPSEO_WooCommerce_Utils::prices_with_tax();
+		$prices_include_tax = Utils::prices_with_tax();
 		$decimals           = wc_get_price_decimals();
 		$data               = [];
 		$product_id         = $product->get_id();
@@ -386,8 +391,8 @@ class WPSEO_WooCommerce_Schema {
 	/**
 	 * Enhances the review data output by WooCommerce.
 	 *
-	 * @param array       $data    Review Schema data.
-	 * @param \WC_Product $product The WooCommerce product we're working with.
+	 * @param array      $data    Review Schema data.
+	 * @param WC_Product $product The WooCommerce product we're working with.
 	 *
 	 * @return array Review Schema data.
 	 */

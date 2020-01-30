@@ -5,7 +5,7 @@ namespace Yoast\WP\Woocommerce\Tests\Classes;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
-use WPSEO_WooCommerce_Schema;
+use Yoast\WP\Woocommerce\Classes\Schema;
 use Yoast\WP\Woocommerce\Tests\Doubles\Schema_Double;
 use Yoast\WP\Woocommerce\Tests\TestCase;
 
@@ -27,10 +27,10 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests the class constructor.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::__construct
+	 * @covers Schema::__construct
 	 */
 	public function test_construct() {
-		$schema = new WPSEO_WooCommerce_Schema( '3.9' );
+		$schema = new Schema( '3.9' );
 
 		$this->assertTrue( has_filter( 'woocommerce_structured_data_product', [ $schema, 'change_product' ] ) );
 		$this->assertTrue(
@@ -51,17 +51,17 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests the class constructor.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::__construct
+	 * @covers Schema::__construct
 	 */
 	public function test_construct_old_wc() {
-		$schema = new WPSEO_WooCommerce_Schema( '3.8' );
+		$schema = new Schema( '3.8' );
 		$this->assertTrue( has_filter( 'woocommerce_structured_data_review', [ $schema, 'change_reviewed_entity' ] ) );
 	}
 
 	/**
 	 * Test our Schema output in the footer.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::output_schema_footer
+	 * @covers Schema::output_schema_footer
 	 */
 	public function test_output_schema_footer() {
 		$schema = new Schema_Double();
@@ -82,7 +82,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test our Schema output in the footer.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::filter_webpage
+	 * @covers Schema::filter_webpage
 	 */
 	public function test_filter_webpage() {
 		Functions\stubs(
@@ -96,7 +96,7 @@ class Schema_Test extends TestCase {
 		$input  = [
 			'@type' => 'WebPage',
 		];
-		$schema = new WPSEO_WooCommerce_Schema();
+		$schema = new Schema();
 		$this->assertEquals( $input, $schema->filter_webpage( $input ) );
 
 		Functions\stubs(
@@ -110,7 +110,7 @@ class Schema_Test extends TestCase {
 		$expected = [
 			'@type' => 'CheckoutPage',
 		];
-		$schema   = new WPSEO_WooCommerce_Schema();
+		$schema   = new Schema();
 		$this->assertEquals( $expected, $schema->filter_webpage( $input ) );
 
 		Functions\stubs(
@@ -124,14 +124,14 @@ class Schema_Test extends TestCase {
 		$expected = [
 			'@type' => 'ItemPage',
 		];
-		$schema   = new WPSEO_WooCommerce_Schema();
+		$schema   = new Schema();
 		$this->assertEquals( $expected, $schema->filter_webpage( $input ) );
 	}
 
 	/**
 	 * Change review Schema test.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::change_reviewed_entity
+	 * @covers Schema::change_reviewed_entity
 	 */
 	public function test_change_reviewed_entity() {
 		$schema = new Schema_Double();
@@ -159,7 +159,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test filtering offers.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::filter_offers
+	 * @covers Schema::filter_offers
 	 */
 	public function test_filter_offers() {
 		$schema = new Schema_Double();
@@ -225,8 +225,8 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test filtering offers.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::filter_offers
-	 * @covers WPSEO_WooCommerce_Schema::add_individual_offers
+	 * @covers Schema::filter_offers
+	 * @covers Schema::add_individual_offers
 	 */
 	public function test_filter_aggregate_offers() {
 		$schema = new Schema_Double();
@@ -488,20 +488,20 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test that removing Woo Breadcrumbs works.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::remove_woo_breadcrumbs
+	 * @covers Schema::remove_woo_breadcrumbs
 	 */
 	public function test_remove_woo_breadcrumbs() {
 		$input    = [ 'webpage', 'breadcrumblist' ];
 		$expected = [ 'webpage' ];
 
-		$class = new WPSEO_WooCommerce_Schema();
+		$class = new Schema();
 		$this->assertEquals( $expected, $class->remove_woo_breadcrumbs( $input ) );
 	}
 
 	/**
 	 * Changing the seller in offers to point to our Organization ID when there's no org.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::change_seller_in_offers
+	 * @covers Schema::change_seller_in_offers
 	 */
 	public function test_change_seller_in_offers_no_organization() {
 		$input = [
@@ -559,7 +559,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Changing the seller in offers to point to our Organization ID
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::change_seller_in_offers
+	 * @covers Schema::change_seller_in_offers
 	 */
 	public function test_change_seller_in_offers() {
 		$input = [
@@ -621,7 +621,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test if our review filtering works and leaves empty reviews unchanged.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::filter_reviews
+	 * @covers Schema::filter_reviews
 	 */
 	public function test_filter_reviews_empty() {
 		$input   = [
@@ -638,7 +638,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test adding the global identifier
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::add_global_identifier
+	 * @covers Schema::add_global_identifier
 	 */
 	public function test_add_global_identifier_false() {
 		$product = Mockery::mock( 'WC_Product' );
@@ -658,7 +658,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test adding the global identifier
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::add_global_identifier
+	 * @covers Schema::add_global_identifier
 	 */
 	public function test_add_global_identifier_gtin() {
 		$product = Mockery::mock( 'WC_Product' );
@@ -683,7 +683,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test adding an ISBN number.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::add_global_identifier
+	 * @covers Schema::add_global_identifier
 	 */
 	public function test_add_global_identifier_isbn() {
 		$product = Mockery::mock( 'WC_Product' );
@@ -712,7 +712,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Test if our review filtering works.
 	 *
-	 * @covers WPSEO_WooCommerce_Schema::filter_reviews
+	 * @covers Schema::filter_reviews
 	 */
 	public function test_filter_reviews() {
 		$input = [
@@ -800,29 +800,29 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests that should_output_yoast_schema returns the right value.
 	 *
-	 * @covers \WPSEO_WooCommerce_Schema::should_output_yoast_schema
+	 * @covers \Schema::should_output_yoast_schema
 	 */
 	public function test_should_output_yoast_schema() {
 		Monkey\Filters\expectApplied( 'wpseo_json_ld_output' )->once()->andReturn( true );
 
-		$actual = WPSEO_WooCommerce_Schema::should_output_yoast_schema();
+		$actual = Schema::should_output_yoast_schema();
 		$this->assertTrue( $actual );
 
 		Monkey\Filters\expectApplied( 'wpseo_json_ld_output' )->once()->andReturn( false );
 
-		$actual = WPSEO_WooCommerce_Schema::should_output_yoast_schema();
+		$actual = Schema::should_output_yoast_schema();
 		$this->assertFalse( $actual );
 	}
 
 	/**
 	 * Tests that the schema data after change product is as expected.
 	 *
-	 * @covers \WPSEO_WooCommerce_Schema::change_product
-	 * @covers \WPSEO_WooCommerce_Schema::get_canonical
-	 * @covers \WPSEO_WooCommerce_Schema::add_image
-	 * @covers \WPSEO_WooCommerce_Schema::add_brand
-	 * @covers \WPSEO_WooCommerce_Schema::add_manufacturer
-	 * @covers \WPSEO_WooCommerce_Schema::add_organization_for_attribute
+	 * @covers \Schema::change_product
+	 * @covers \Schema::get_canonical
+	 * @covers \Schema::add_image
+	 * @covers \Schema::add_brand
+	 * @covers \Schema::add_manufacturer
+	 * @covers \Schema::add_organization_for_attribute
 	 */
 	public function test_change_product() {
 		$product_id   = 1;
@@ -981,12 +981,12 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests that the schema data after change product is as expected.
 	 *
-	 * @covers \WPSEO_WooCommerce_Schema::change_product
-	 * @covers \WPSEO_WooCommerce_Schema::get_canonical
-	 * @covers \WPSEO_WooCommerce_Schema::add_image
-	 * @covers \WPSEO_WooCommerce_Schema::add_brand
-	 * @covers \WPSEO_WooCommerce_Schema::add_manufacturer
-	 * @covers \WPSEO_WooCommerce_Schema::add_organization_for_attribute
+	 * @covers \Schema::change_product
+	 * @covers \Schema::get_canonical
+	 * @covers \Schema::add_image
+	 * @covers \Schema::add_brand
+	 * @covers \Schema::add_manufacturer
+	 * @covers \Schema::add_organization_for_attribute
 	 */
 	public function test_change_product_no_thumb() {
 		$product_id   = 1;
@@ -1153,7 +1153,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests that get_primary_term_or_first_term returns the primary term.
 	 *
-	 * @covers \WPSEO_WooCommerce_Schema::get_primary_term_or_first_term
+	 * @covers \Schema::get_primary_term_or_first_term
 	 */
 	public function test_get_primary_term_or_first_term_expecting_primary_term() {
 		$id            = 1;
@@ -1175,7 +1175,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests that get_primary_term_or_first_term returns the first term.
 	 *
-	 * @covers \WPSEO_WooCommerce_Schema::get_primary_term_or_first_term
+	 * @covers \Schema::get_primary_term_or_first_term
 	 */
 	public function test_get_primary_term_or_first_term_expecting_first_term() {
 		$id            = 1;
@@ -1208,7 +1208,7 @@ class Schema_Test extends TestCase {
 	/**
 	 * Tests that get_primary_term_or_first_term returns the first term.
 	 *
-	 * @covers \WPSEO_WooCommerce_Schema::get_primary_term_or_first_term
+	 * @covers \Schema::get_primary_term_or_first_term
 	 */
 	public function test_get_primary_term_or_first_term_without_terms() {
 		$id            = 1;

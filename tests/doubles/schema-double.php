@@ -2,12 +2,14 @@
 
 namespace Yoast\WP\Woocommerce\Tests\Doubles;
 
-use WPSEO_WooCommerce_Schema;
+use Yoast\WP\Woocommerce\Classes\Schema;
+use WP_Term;
+use WC_Product;
 
 /**
  * Test Helper Class.
  */
-class Schema_Double extends WPSEO_WooCommerce_Schema {
+class Schema_Double extends Schema {
 
 	/**
 	 * The schema data we're going to output.
@@ -29,7 +31,7 @@ class Schema_Double extends WPSEO_WooCommerce_Schema {
 	 * @param string $taxonomy_name Taxonomy name for the term.
 	 * @param int    $post_id       Post ID for the term.
 	 *
-	 * @return \WP_Term|null The primary term, the first term or null.
+	 * @return WP_Term|null The primary term, the first term or null.
 	 */
 	public function get_primary_term_or_first_term( $taxonomy_name, $post_id ) {
 		return parent::get_primary_term_or_first_term( $taxonomy_name, $post_id );
@@ -47,8 +49,8 @@ class Schema_Double extends WPSEO_WooCommerce_Schema {
 	/**
 	 * Filters the offers array to enrich it.
 	 *
-	 * @param array       $data    Schema Product data.
-	 * @param \WC_Product $product The product.
+	 * @param array      $data    Schema Product data.
+	 * @param WC_Product $product The product.
 	 *
 	 * @return array Schema Product data.
 	 */
@@ -70,8 +72,8 @@ class Schema_Double extends WPSEO_WooCommerce_Schema {
 	/**
 	 * Enhances the review data output by WooCommerce.
 	 *
-	 * @param array       $data    Review Schema data.
-	 * @param \WC_Product $product The WooCommerce product we're working with.
+	 * @param array      $data    Review Schema data.
+	 * @param WC_Product $product The WooCommerce product we're working with.
 	 *
 	 * @return array Review Schema data.
 	 */
@@ -82,7 +84,7 @@ class Schema_Double extends WPSEO_WooCommerce_Schema {
 	/**
 	 * Add a global identifier to our output if we have one.
 	 *
-	 * @param \WC_Product $product Product object.
+	 * @param WC_Product $product Product object.
 	 *
 	 * @return bool
 	 */
@@ -93,7 +95,7 @@ class Schema_Double extends WPSEO_WooCommerce_Schema {
 	/**
 	 * Retrieve the global identifier type and value if we have one.
 	 *
-	 * @param \WC_Product $product Product object.
+	 * @param WC_Product $product Product object.
 	 *
 	 * @return array|bool An array of `type` and `value` on success, false on failure.
 	 */

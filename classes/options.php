@@ -1,30 +1,15 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package    Internals
- * @since      1.1.0
- * @version    1.1.0
- */
 
-// Avoid direct calls to this file.
-if ( ! class_exists( 'Yoast_WooCommerce_SEO' ) ) {
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit();
-}
+namespace Yoast\WP\Woocommerce\Classes;
 
+use WPSEO_Options;
+use WPSEO_Option;
+use WPSEO_Utils;
 
 /**
- * ****************************************************************
- * Option: wpseo_woo
+ * Class WPSEO_Option_Woo
  */
-if ( ! class_exists( 'WPSEO_Option_Woo' ) && class_exists( 'WPSEO_Option' ) ) {
-
-	/**
-	 * Class WPSEO_Option_Woo
-	 */
-	class WPSEO_Option_Woo extends WPSEO_Option {
+class Options extends WPSEO_Option {
 
 		/**
 		 * Option name.
@@ -230,5 +215,4 @@ if ( ! class_exists( 'WPSEO_Option_Woo' ) && class_exists( 'WPSEO_Option' ) ) {
 
 			$this->clean();
 		}
-	}
 }

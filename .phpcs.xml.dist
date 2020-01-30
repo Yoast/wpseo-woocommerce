@@ -123,6 +123,10 @@
 		<exclude-pattern>/tests/bootstrap\.php$</exclude-pattern>
 	</rule>
 
+	<!-- Main plugin file needs the WP plugin file header. -->
+	<rule ref="Yoast.Commenting.FileComment.Unnecessary">
+		<exclude-pattern>/wpseo-woocommerce\.php$</exclude-pattern>
+	</rule>
 
 	<!--
 	#############################################################################

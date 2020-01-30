@@ -1,14 +1,11 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package WPSEO/WooCommerce
- */
+
+namespace Yoast\WP\Woocommerce\Classes;
 
 /**
  * Class Yoast_WooCommerce_Dependencies
  */
-class Yoast_WooCommerce_Dependencies {
+class Dependencies {
 
 	/**
 	 * Checks the dependencies. Sets a notice when requirements aren't met.

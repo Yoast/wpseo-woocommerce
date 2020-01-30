@@ -1,14 +1,21 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package WPSEO/WooCommerce
- */
+
+namespace Yoast\WP\Woocommerce\Classes;
+
+use WP_Query;
+use WPSEO_Primary_Term;
+use WPSEO_Addon_Manager;
+use WPSEO_Admin_Asset_Manager;
+use WPSEO_HelpScout;
+use WPSEO_Link_Columns;
+use WPSEO_Options;
+use Yoast_Form;
+use Yoast_I18n_v3;
 
 /**
- * Class Yoast_WooCommerce_SEO
+ * Class Main
  */
-class Yoast_WooCommerce_SEO {
+class Main {
 
 	/**
 	 * Version of the plugin.
@@ -48,7 +55,7 @@ class Yoast_WooCommerce_SEO {
 		}
 
 		// Make sure the options property is always current.
-		add_action( 'init', [ 'WPSEO_Option_Woo', 'register_option' ] );
+		add_action( 'init', [ 'Yoast\WP\Woocommerce\Classes\Options', 'register_option' ] );
 
 		// Enable Yoast usage tracking.
 		add_filter( 'wpseo_enable_tracking', '__return_true' );
@@ -64,7 +71,7 @@ class Yoast_WooCommerce_SEO {
 			// Move Woo box above SEO box.
 			add_action( 'admin_footer', [ $this, 'footer_js' ] );
 
-			new WPSEO_WooCommerce_Yoast_Tab();
+			new Tab();
 		}
 		else {
 			// Initialize schema & OpenGraph.
@@ -105,8 +112,8 @@ class Yoast_WooCommerce_SEO {
 	 * Initializes the schema functionality.
 	 */
 	public function initialize_schema() {
-		if ( WPSEO_WooCommerce_Schema::should_output_yoast_schema() ) {
-			new WPSEO_WooCommerce_Schema( WC_VERSION );
+		if ( Schema::should_output_yoast_schema() ) {
+			new Schema( WC_VERSION );
 		}
 	}
 
@@ -114,7 +121,7 @@ class Yoast_WooCommerce_SEO {
 	 * Initializes the schema functionality.
 	 */
 	public function initialize_opengraph() {
-		new WPSEO_WooCommerce_OpenGraph();
+		new OpenGraph();
 	}
 
 	/**
@@ -943,7 +950,7 @@ class Yoast_WooCommerce_SEO {
 
 		$brand_taxonomies = array_filter( $brand_taxonomies, 'taxonomy_exists' );
 
-		$primary_term = WPSEO_WooCommerce_Utils::search_primary_term( $brand_taxonomies, $product );
+		$primary_term = Utils::search_primary_term( $brand_taxonomies, $product );
 		if ( $primary_term !== '' ) {
 			return $primary_term;
 		}

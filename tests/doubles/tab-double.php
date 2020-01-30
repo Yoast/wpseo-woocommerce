@@ -2,12 +2,12 @@
 
 namespace Yoast\WP\Woocommerce\Tests\Doubles;
 
-use WPSEO_WooCommerce_Yoast_Tab;
+use Yoast\WP\Woocommerce\Classes\Tab;
 
 /**
- * Class WPSEO_WooCommerce_Yoast_Tab_Double
+ * Class Yoast_Tab_Double
  */
-class Yoast_Tab_Double extends WPSEO_WooCommerce_Yoast_Tab {
+class Tab_Double extends Tab {
 
 	/**
 	 * Make sure the data is safe to save.

@@ -5,21 +5,22 @@ namespace Yoast\WP\Woocommerce\Tests\Classes;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
-use Yoast\WP\Woocommerce\Tests\Doubles\Yoast_Tab_Double;
+use Yoast\WP\Woocommerce\Tests\Doubles\Tab_Double;
 use Yoast\WP\Woocommerce\Tests\TestCase;
+use Yoast\WP\Woocommerce\Classes\Tab;
 
 /**
- * Class WooCommerce_Schema_Test.
+ * Class Tab_Test.
  */
-class WooCommerce_Yoast_Tab_Test extends TestCase {
+class Tab_Test extends TestCase {
 
 	/**
 	 * Test our constructor.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::__construct
+	 * @covers Tab::__construct
 	 */
 	public function test_construct() {
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 		$this->assertTrue( has_filter( 'woocommerce_product_data_tabs', [ $instance, 'yoast_seo_tab' ] ) );
 		$this->assertTrue( has_action( 'woocommerce_product_data_panels', [ $instance, 'add_yoast_seo_fields' ] ) );
 		$this->assertTrue( has_action( 'save_post', [ $instance, 'save_data' ] ) );
@@ -28,10 +29,10 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 	/**
 	 * Test adding our section to the Product Data section.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::yoast_seo_tab
+	 * @covers Tab::yoast_seo_tab
 	 */
 	public function test_yoast_seo_tab() {
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 		$expected = [
 			'yoast_tab' => [
 				'label'  => 'Yoast SEO',
@@ -45,7 +46,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 	/**
 	 * Test loading our view.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::add_yoast_seo_fields
+	 * @covers Tab::add_yoast_seo_fields
 	 */
 	public function test_add_yoast_seo_fields() {
 		ob_start();
@@ -65,7 +66,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 			]
 		);
 
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 		$instance->add_yoast_seo_fields();
 
 		$output = ob_get_contents();
@@ -78,7 +79,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 	/**
 	 * Test whether we don't save any data when the current save is a post revision.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::save_data
+	 * @covers Tab::save_data
 	 */
 	public function test_save_data_revision() {
 		Functions\stubs(
@@ -87,14 +88,14 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 			]
 		);
 
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 		$this->assertFalse( $instance->save_data( 123 ) );
 	}
 
 	/**
 	 * Test whether we don't save any data when there is no valid nonce.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::save_data
+	 * @covers Tab::save_data
 	 */
 	public function test_save_data_wrong_nonce() {
 		Functions\stubs(
@@ -104,14 +105,14 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 			]
 		);
 
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 		$this->assertFalse( $instance->save_data( 123 ) );
 	}
 
 	/**
 	 * Test whether we don't save any data when there is nothing to save.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::save_data
+	 * @covers Tab::save_data
 	 */
 	public function test_save_data_empty() {
 		Functions\stubs(
@@ -127,7 +128,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 			]
 		);
 
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 
 		// No $_POST data, so nothing to save.
 		$this->assertTrue( $instance->save_data( 123 ) );
@@ -136,8 +137,8 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 	/**
 	 * Test whether we save data when we have it.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::save_data
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::save_post_data
+	 * @covers Tab::save_data
+	 * @covers Tab::save_post_data
 	 */
 	public function test_save_data() {
 		Functions\stubs(
@@ -154,7 +155,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 			]
 		);
 
-		$instance = new \WPSEO_WooCommerce_Yoast_Tab();
+		$instance = new Tab();
 
 		$_POST = [
 			'yoast_seo' => [
@@ -167,7 +168,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 	/**
 	 * Test our data validation.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::validate_data
+	 * @covers Tab::validate_data
 	 */
 	public function test_validate_data() {
 		Functions\stubs(
@@ -180,7 +181,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 			]
 		);
 
-		$instance = new Yoast_Tab_Double();
+		$instance = new Tab_Double();
 		$this->assertTrue( $instance->validate_data( '12345' ) );
 		$this->assertFalse( $instance->validate_data( '12345<script>' ) );
 		$this->assertTrue( $instance->validate_data( '' ) );
@@ -189,7 +190,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 	/**
 	 * Test our input fields are outputted correctly.
 	 *
-	 * @covers WPSEO_WooCommerce_Yoast_Tab::input_field_for_identifier
+	 * @covers Tab::input_field_for_identifier
 	 */
 	public function test_input_field_for_identifier() {
 		Functions\stubs(
@@ -200,7 +201,7 @@ class WooCommerce_Yoast_Tab_Test extends TestCase {
 		);
 
 		ob_start();
-		$instance = new Yoast_Tab_Double();
+		$instance = new Tab_Double();
 		$instance->input_field_for_identifier( 'gtin8', 'GTIN 8', '12345678' );
 		$output = ob_get_contents();
 		ob_end_clean();

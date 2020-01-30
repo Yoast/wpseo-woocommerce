@@ -1,20 +1,21 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package WPSEO/WooCommerce
- */
+
+namespace Yoast\WP\Woocommerce\Classes;
+
+use WPSEO_Options;
+use WPSEO_Primary_Term;
+use WC_Product;
 
 /**
- * Class WPSEO_WooCommerce_Utils
+ * Class Utils
  */
-class WPSEO_WooCommerce_Utils {
+class Utils {
 
 	/**
 	 * Searches for the primary terms for given taxonomies and returns the first found primary term.
 	 *
-	 * @param array      $brand_taxonomies The taxonomies to find the primary term for.
-	 * @param WC_Product $product          The WooCommerce Product.
+	 * @param array       $brand_taxonomies The taxonomies to find the primary term for.
+	 * @param \WC_Product $product          The WooCommerce Product.
 	 *
 	 * @return string The term's name (if found). Otherwise an empty string.
 	 */

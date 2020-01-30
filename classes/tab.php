@@ -1,14 +1,11 @@
 <?php
-/**
- * WooCommerce Yoast SEO plugin file.
- *
- * @package WPSEO/WooCommerce
- */
+
+namespace Yoast\WP\Woocommerce\Classes;
 
 /**
- * Class WPSEO_WooCommerce_Yoast_Tab
+ * Class Tab
  */
-class WPSEO_WooCommerce_Yoast_Tab {
+class Tab {
 
 	/**
 	 * The array of allowed identifier types.
@@ -25,7 +22,7 @@ class WPSEO_WooCommerce_Yoast_Tab {
 	];
 
 	/**
-	 * WPSEO_WooCommerce_Yoast_Tab constructor.
+	 * Tab constructor.
 	 */
 	public function __construct() {
 		add_filter( 'woocommerce_product_data_tabs', [ $this, 'yoast_seo_tab' ] );

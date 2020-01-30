@@ -5,18 +5,18 @@ namespace Yoast\WP\Woocommerce\Tests\Classes;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
-use WPSEO_WooCommerce_Utils;
+use Yoast\WP\Woocommerce\Classes\Utils;
 use Yoast\WP\Woocommerce\Tests\TestCase;
 
 /**
- * Class WooCommerce_Schema_Test.
+ * Class Utils_Test.
  */
 class Utils_Test extends TestCase {
 
 	/**
 	 * Test retrieving a primary term.
 	 *
-	 * @covers WPSEO_WooCommerce_Utils::search_primary_term
+	 * @covers Utils::search_primary_term
 	 */
 	public function test_search_primary_term() {
 		$product_id = 123;
@@ -34,13 +34,13 @@ class Utils_Test extends TestCase {
 			]
 		);
 
-		$this->assertEquals( 'Apple', WPSEO_WooCommerce_Utils::search_primary_term( [ 'brand' ], $product ) );
+		$this->assertEquals( 'Apple', Utils::search_primary_term( [ 'brand' ], $product ) );
 	}
 
 	/**
 	 * Test retrieving a primary term.
 	 *
-	 * @covers WPSEO_WooCommerce_Utils::search_primary_term
+	 * @covers Utils::search_primary_term
 	 */
 	public function test_search_primary_term_find_none() {
 		$product_id = 123;
@@ -52,14 +52,14 @@ class Utils_Test extends TestCase {
 		$primary_term_mock->expects( '__construct' )->once()->with( 'brand', $product_id )->andReturnSelf();
 		$primary_term_mock->expects( 'get_primary_term' )->once()->with()->andReturn( false );
 
-		$this->assertEquals( '', WPSEO_WooCommerce_Utils::search_primary_term( [ 'brand' ], $product ) );
+		$this->assertEquals( '', Utils::search_primary_term( [ 'brand' ], $product ) );
 	}
 
 	/**
 	 * Test getting the product display price
 	 *
-	 * @covers WPSEO_WooCommerce_Utils::get_product_display_price
-	 * @covers WPSEO_WooCommerce_Utils::prices_with_tax
+	 * @covers Utils::get_product_display_price
+	 * @covers Utils::prices_with_tax
 	 */
 	public function test_get_product_display_price() {
 		$price    = 10;
@@ -91,13 +91,13 @@ class Utils_Test extends TestCase {
 			]
 		);
 
-		$this->assertEquals( ( $price * $tax_rate ), WPSEO_WooCommerce_Utils::get_product_display_price( $product ) );
+		$this->assertEquals( ( $price * $tax_rate ), Utils::get_product_display_price( $product ) );
 	}
 
 	/**
 	 * Test the different cases for prices with or without tax.
 	 *
-	 * @covers WPSEO_WooCommerce_Utils::prices_with_tax
+	 * @covers Utils::prices_with_tax
 	 */
 	public function test_prices_with_tax() {
 		Functions\stubs(
@@ -105,7 +105,7 @@ class Utils_Test extends TestCase {
 				'wc_tax_enabled' => false,
 			]
 		);
-		$this->assertFalse( WPSEO_WooCommerce_Utils::prices_with_tax() );
+		$this->assertFalse( Utils::prices_with_tax() );
 
 		Functions\stubs(
 			[
@@ -118,7 +118,7 @@ class Utils_Test extends TestCase {
 			->with( 'woocommerce_tax_display_shop' )
 			->andReturn( 'excl' );
 
-		$this->assertFalse( WPSEO_WooCommerce_Utils::prices_with_tax() );
+		$this->assertFalse( Utils::prices_with_tax() );
 
 		Monkey\Functions\expect( 'get_option' )
 			->twice()
@@ -128,9 +128,9 @@ class Utils_Test extends TestCase {
 		$options = Mockery::mock( 'alias:WPSEO_Options' )->makePartial();
 		$options->expects( 'get' )->once()->with( 'woo_schema_og_prices_with_tax' )->andReturn( false );
 
-		$this->assertFalse( WPSEO_WooCommerce_Utils::prices_with_tax() );
+		$this->assertFalse( Utils::prices_with_tax() );
 
 		$options->expects( 'get' )->once()->with( 'woo_schema_og_prices_with_tax' )->andReturn( true );
-		$this->assertTrue( WPSEO_WooCommerce_Utils::prices_with_tax() );
+		$this->assertTrue( Utils::prices_with_tax() );
 	}
 }

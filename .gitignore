@@ -1,6 +1,7 @@
 node_modules/*
 /vendor/
 .idea
+.vscode
 artifact.zip
 artifact/
 .phpcs.xml

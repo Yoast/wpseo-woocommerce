@@ -4,13 +4,13 @@ namespace Yoast\WP\Woocommerce\Tests\Classes;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use Yoast\WP\Woocommerce\Tests\Doubles\Yoast_WooCommerce_Dependencies_Double;
+use Yoast\WP\Woocommerce\Tests\Doubles\Dependencies_Double;
 use Yoast\WP\Woocommerce\Tests\TestCase;
 
 /**
  * Class WooCommerce_Schema_Test.
  */
-class Yoast_WooCommerce_Dependencies_Test extends TestCase {
+class Dependencies_Test extends TestCase {
 
 	/**
 	 * Tests check dependencies.
@@ -23,7 +23,7 @@ class Yoast_WooCommerce_Dependencies_Test extends TestCase {
 		$valid_wp_version        = '5.2';
 		$valid_yoast_seo_version = '12.6-RC0';
 
-		$class = Mockery::mock( Yoast_WooCommerce_Dependencies_Double::class )->makePartial();
+		$class = Mockery::mock( Dependencies_Double::class )->makePartial();
 
 		// Invalid WordPress version.
 		$actual = $class->check_dependencies( '5.0' );
@@ -71,7 +71,7 @@ class Yoast_WooCommerce_Dependencies_Test extends TestCase {
 	 * @covers Yoast_WooCommerce_Dependencies::check_woocommerce_exists
 	 */
 	public function test_check_woocommerce_exists() {
-		$class = Mockery::mock( Yoast_WooCommerce_Dependencies_Double::class )->makePartial();
+		$class = Mockery::mock( Dependencies_Double::class )->makePartial();
 
 		$this->assertFalse( $class->check_woocommerce_exists() );
 
@@ -86,7 +86,7 @@ class Yoast_WooCommerce_Dependencies_Test extends TestCase {
 	 * @covers Yoast_WooCommerce_Dependencies::get_yoast_seo_version
 	 */
 	public function test_get_wordpress_seo_version() {
-		$class = Mockery::mock( Yoast_WooCommerce_Dependencies_Double::class )->makePartial();
+		$class = Mockery::mock( Dependencies_Double::class )->makePartial();
 
 		$this->assertFalse( $class->get_yoast_seo_version() );
 
@@ -148,7 +148,7 @@ class Yoast_WooCommerce_Dependencies_Test extends TestCase {
 	 */
 	private function error_message_test( $function, $expected ) {
 		ob_start();
-		$class = Mockery::mock( Yoast_WooCommerce_Dependencies_Double::class )->makePartial();
+		$class = Mockery::mock( Dependencies_Double::class )->makePartial();
 
 		Functions\stubs(
 			[
