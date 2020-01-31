@@ -36,7 +36,10 @@
     "require-dev": {
         "yoast/yoastcs": "^2.0.0",
         "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0",
-        "brain/monkey": "^2.4"
+        "brain/monkey": "^2.4",
+        "sensiolabs/security-checker": "^5.0",
+        "phpmd/phpmd": "^2.8",
+        "sebastian/phpcpd": "^3.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

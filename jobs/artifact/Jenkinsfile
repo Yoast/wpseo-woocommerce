@@ -1,0 +1,22 @@
+node( 'docker-agent' ) {
+    checkout( [
+        $class: 'GitSCM',
+        branches: [ [name: params.commit ] ],
+        userRemoteConfigs: [ [url: 'https://github.com/Yoast/wpseo-woocommerce.git', credentialsId: 'Yoastbot-CI' ] ]
+    ] )
+    docker.image( 'yoastseo/docker-php-composer-node:latest' ).inside {
+        stage( 'Install' ) {
+            sh 'yarn global add grunt-cli'
+            sh 'yarn install'
+            sh 'composer install --no-dev --no-interaction'
+        }
+        stage( 'Set version' ) {
+            sh "grunt set-version -new-version=${params.version}"
+            sh 'grunt update-version'
+        }
+        stage( 'Artifact' ) {
+            sh 'grunt artifact'
+            archiveArtifacts artifacts: 'artifact.zip'
+        }
+    }
+}
