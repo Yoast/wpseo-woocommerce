@@ -143,6 +143,11 @@ class WPSEO_WooCommerce_Schema {
 	 * @return array Schema Product data.
 	 */
 	protected function filter_offers( $data, $product ) {
+		// Bail if $data['offers'] is not available
+		if ( empty( $data['offers'] ) ) {
+			return $data;
+		}
+		
 		$home_url       = trailingslashit( get_site_url() );
 		$data['offers'] = $this->filter_sales( $data['offers'], $product );
 
