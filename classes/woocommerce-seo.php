@@ -79,6 +79,7 @@ class Yoast_WooCommerce_SEO {
 			add_action( 'init', [ $this, 'initialize_schema' ] );
 			add_action( 'init', [ $this, 'initialize_twitter' ] );
 			add_action( 'init', [ $this, 'initialize_slack' ] );
+			add_action( 'init', [ $this, 'initialize_breadcrumbs' ] );
 			add_filter( 'wpseo_frontend_presenters', [ $this, 'add_frontend_presenter' ] );
 
 			// Add metadescription filter.
@@ -93,9 +94,6 @@ class Yoast_WooCommerce_SEO {
 
 			add_filter( 'post_type_archive_link', [ $this, 'xml_post_type_archive_link' ], 10, 2 );
 			add_filter( 'wpseo_sitemap_urlimages', [ $this, 'add_product_images_to_xml_sitemap' ], 10, 2 );
-
-			// Fix breadcrumbs.
-			add_action( 'send_headers', [ $this, 'handle_breadcrumbs_replacements' ] );
 		}
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
@@ -142,6 +140,13 @@ class Yoast_WooCommerce_SEO {
 	public function initialize_slack() {
 		$slack = new WPSEO_WooCommerce_Slack();
 		$slack->register_hooks();
+	}
+
+	/**
+	 * Initializes the schema functionality.
+	 */
+	public function initialize_breadcrumbs() {
+		new WPSEO_WooCommerce_Breadcrumbs();
 	}
 
 	/**
@@ -308,73 +313,6 @@ class Yoast_WooCommerce_SEO {
 		}
 
 		return $term;
-	}
-
-	/**
-	 * Overrides the Woo breadcrumb functionality when the WP SEO breadcrumb functionality is enabled.
-	 *
-	 * @uses  woo_breadcrumbs filter
-	 *
-	 * @since 1.1.3
-	 *
-	 * @return string
-	 */
-	public function override_woo_breadcrumbs() {
-		$breadcrumb = yoast_breadcrumb( '<div class="breadcrumb breadcrumbs woo-breadcrumbs"><div class="breadcrumb-trail">', '</div></div>', false );
-		if ( current_action() === 'storefront_before_content' ) {
-			$breadcrumb = '<div class="storefront-breadcrumb"><div class="col-full">' . $breadcrumb . '</div></div>';
-		}
-		return $breadcrumb;
-	}
-
-	/**
-	 * Shows the Yoast SEO breadcrumbs.
-	 *
-	 * @return void
-	 */
-	public function show_yoast_breadcrumbs() {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We need to output HTML. If we escape this we break it.
-		echo $this->override_woo_breadcrumbs();
-	}
-
-	/**
-	 * Add the selected attribute to the breadcrumb.
-	 *
-	 * @param array $crumbs Existing breadcrumbs.
-	 *
-	 * @return array
-	 */
-	public function add_attribute_to_breadcrumbs( $crumbs ) {
-		global $_chosen_attributes;
-
-		// Copy the array.
-		$yoast_chosen_attributes = $_chosen_attributes;
-
-		// Check if the attribute filter is used.
-		if ( is_array( $yoast_chosen_attributes ) && count( $yoast_chosen_attributes ) > 0 ) {
-			// Store keys.
-			$att_keys = array_keys( $yoast_chosen_attributes );
-
-			// We got an attribute filter, get the first Attribute.
-			$att_group = array_shift( $yoast_chosen_attributes );
-
-			if ( is_array( $att_group['terms'] ) && count( $att_group['terms'] ) > 0 ) {
-
-				// Get the attribute ID.
-				$att = array_shift( $att_group['terms'] );
-
-				// Get the term.
-				$term = get_term( (int) $att, array_shift( $att_keys ) );
-
-				if ( is_object( $term ) ) {
-					$crumbs[] = [
-						'term' => $term,
-					];
-				}
-			}
-		}
-
-		return $crumbs;
 	}
 
 	/**
@@ -610,15 +548,6 @@ class Yoast_WooCommerce_SEO {
 	 */
 	private function filter_yoast_columns( $column ) {
 		return strpos( $column, 'wpseo-' ) === 0;
-	}
-
-	/**
-	 * Output WordPress SEO crafted breadcrumbs, instead of WooCommerce ones.
-	 *
-	 * @since 1.0
-	 */
-	public function woo_wpseo_breadcrumbs() {
-		yoast_breadcrumb( '<nav class="woocommerce-breadcrumb">', '</nav>' );
 	}
 
 	/**
@@ -1242,30 +1171,6 @@ class Yoast_WooCommerce_SEO {
 			'woo_desc_long'           => __( 'The short description for this product is too long.', 'yoast-woo-seo' ),
 			'wooGooglePreviewData'    => $google_preview,
 		];
-	}
-
-	/**
-	 * Handles the WooCommerce breadcrumbs replacements.
-	 *
-	 * @return void
-	 */
-	public function handle_breadcrumbs_replacements() {
-		if ( WPSEO_Options::get( 'woo_breadcrumbs' ) !== true || WPSEO_Options::get( 'breadcrumbs-enable' ) !== true ) {
-			return;
-		}
-
-		if ( has_action( 'storefront_before_content', 'woocommerce_breadcrumb' ) ) {
-			remove_action( 'storefront_before_content', 'woocommerce_breadcrumb' );
-			add_action( 'storefront_before_content', [ $this, 'show_yoast_breadcrumbs' ] );
-		}
-
-		// Replaces the WooCommerce breadcrumbs.
-		if ( has_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb' ) ) {
-			remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
-			add_action( 'woocommerce_before_main_content', [ $this, 'show_yoast_breadcrumbs' ], 20, 0 );
-		}
-
-		add_filter( 'wpseo_breadcrumb_links', [ $this, 'add_attribute_to_breadcrumbs' ] );
 	}
 
 	/**
