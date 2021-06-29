@@ -30,22 +30,18 @@ You can find the FAQ [online here](https://kb.yoast.com/kb/category/woocommerce-
 
 Changelog
 =========
+
+### 14.2: July 13th, 2021
+No category:
+* Replaces an occurrence of the deprecated jQuery `.ready` syntax with more modern syntax. Props t
+
+Other:
+* Sets the minimum WordPress version to 5.6.
+
 ### 14.1: June 1st, 2021
 Other:
 * Makes WooCommerce SEO compatible with the latest version of Yoast SEO.
 * Sets the minimum supported Yoast SEO version to 16.4.
-
-### 14.0: May 18th, 2021
-Enhancements:
-* Add the rating, number of reviews, price and availability to the Google Preview for products to match Google's search results.
-* Improves the `priceSpecification` Schema output to prevent warnings from Google Search Console.
-
-Bugfixes:
-* Fixes a bug where the Social Previews would not use Product Gallery images as a fallback for social sharing.
-
-Other:
-* Sets the WordPress tested up to version to 5.7 and minimum supported WordPress version to 5.6.
-* Sets the minimum supported Yoast SEO version to 16.3.
 
 ### Earlier versions
 For the changelog of earlier versions, please refer to [the changelog on yoast.com](https://yoa.st/woo-seo-changelog).
