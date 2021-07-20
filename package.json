@@ -30,7 +30,7 @@
     "webpack-cli": "^3.1.0"
   },
   "yoast": {
-    "pluginVersion": "14.2.1-RC1"
+    "pluginVersion": "14.2.1"
   },
   "dependencies": {
     "@wordpress/dependency-extraction-webpack-plugin": "^3.1.0"
